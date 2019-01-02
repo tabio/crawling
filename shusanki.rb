@@ -18,7 +18,7 @@ class Shusanki
 
   def mk_pref_list
     url = "#{@site_url}area.html"
-    csv.open(@csv_pref, 'w') do |csv|
+    CSV.open(@csv_pref, 'w') do |csv|
       doc = Nokogiri::HTML(open(url))
       doc.css('dl#top a').each do |element|
         href = element[:href]
