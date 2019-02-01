@@ -20,7 +20,7 @@ class SendMail
       mail.to 'to@example.com'
       mail.subject title
       mail.body "#{title}です。ご確認ください。"
-      mail.add_file filename: out_path, content: File.read(file_path)
+      mail.add_file filename: File.basename(file_path), content: File.read(file_path)
       mail.deliver
     end
   end
