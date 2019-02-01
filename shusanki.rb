@@ -6,7 +6,7 @@ require 'open-uri'
 require 'csv'
 require 'nkf'
 require 'mail'
-require 'send_mail.rb'
+require './send_mail.rb'
 
 class Shusanki
   SLEEP_COOUNT = 10

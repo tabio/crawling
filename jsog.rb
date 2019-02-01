@@ -4,7 +4,7 @@ require 'pp'
 require 'open-uri'
 require 'csv'
 require 'nkf'
-require 'send_mail.rb'
+require './send_mail.rb'
 
 class JSOG
   SLEEP_COOUNT = 10
