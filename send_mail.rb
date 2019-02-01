@@ -2,7 +2,7 @@ require 'mail'
 
 class SendMail
   class << self
-    def send_csv(file_path)
+    def send_csv(title, file_path)
       mail = Mail.new
       options = {
         address: 'smtp.gmail.com',
@@ -18,8 +18,8 @@ class SendMail
       mail.charset = 'utf-8'
       mail.from 'from@example.com'
       mail.to 'to@example.com'
-      mail.subject 'メールタイトル'
-      mail.body 'メール本文'
+      mail.subject title
+      mail.body "#{title}です。ご確認ください。"
       mail.add_file filename: out_path, content: File.read(file_path)
       mail.deliver
     end

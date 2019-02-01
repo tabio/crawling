@@ -114,4 +114,4 @@ obj.mk_target_list
 obj.mk_list
 obj.clean
 
-SendMail.send_csv(obj.csv_result)
+SendMail.send_csv('周産期医療の広場csv', obj.csv_result)

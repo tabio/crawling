@@ -38,4 +38,4 @@ end
 obj = JSOG.new
 obj.mk_list
 
-SendMail.send_csv(obj.csv_result)
+SendMail.send_csv('日本産婦人科科学会csv', obj.csv_result)
