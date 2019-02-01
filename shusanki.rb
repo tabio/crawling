@@ -5,15 +5,23 @@ require 'pp'
 require 'open-uri'
 require 'csv'
 require 'nkf'
+require 'mail'
+require 'send_mail.rb'
 
 class Shusanki
-  SLEEP_COOUNT = 1
+  SLEEP_COOUNT = 10
+
+  attr_reader :csv_result
 
   def initialize
     @site_url = 'http://shusanki.org/'
     @csv_pref = 'shusanki_pref.csv'
     @csv_city = 'shusanki_city.csv'
     @csv_target = 'target_list.csv'
+    @csv_result = "reports/shusanki_list_#{Time.now.strftime('%Y%m%d')}.csv"
+
+    Dir::mkdir('reports') if !Dir.exist?('reports')
+    mk_pref_list if !File.exist?(@csv_pref)
   end
 
   def mk_pref_list
@@ -39,6 +47,8 @@ class Shusanki
         end
       end
     end
+  rescue => e
+    p e.message
   end
 
   def mk_target_list
@@ -58,10 +68,12 @@ class Shusanki
         end
       end
     end
+  rescue => e
+    p e.message
   end
 
   def mk_list
-    CSV.open('shusanki_list.csv','w') do |csv|
+    CSV.open(@csv_result,'w') do |csv|
       csv << %w|施設名 参照元URL 郵便番号 住所 電話番号 URL|
       CSV.foreach(@csv_target, headers: false) do |data|
         sleep SLEEP_COOUNT
@@ -84,8 +96,22 @@ class Shusanki
         csv << data + [post, address, tel, url]
       end
     end
+  rescue => e
+    p e.message
+  end
+
+  def clean
+    File.delete(@csv_city)
+    File.delete(@csv_target)
+  rescue => e
+    p e.message
   end
 end
 
 obj = Shusanki.new
+obj.mk_city_list
+obj.mk_target_list
 obj.mk_list
+obj.clean
+
+SendMail.send_csv(obj.csv_result)
